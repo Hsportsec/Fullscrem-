@@ -1,14 +1,85 @@
 
-		private function toggleFullScreen(event:MouseEvent):void {
-            switch(stage.displayState) {
-                case "normal":
-                    stage.displayState = "fullScreen";
-					tf1.htmlText = textNormalScreen;
-                    break;
-                case "fullScreen":
-                default:
-                    stage.displayState = "normal";  
-					tf1.htmlText = textFullScreen;  
-                    break;
-            }
-        }        
+		   <input class="button" onclick="toggleFullscreen()" type="button" value="Fullscreen TV">
+         <input id="updateButton" onclick="updateIframe()" type="button" value="Update">
+            <script>
+        /* Your existing scripts */
+
+        function updateIframe() {
+            var iframe = document.querySelector("iframe");
+            iframe.src = iframe.src; // Reloads the iframe with the same URL
+        }
+    </script>
+<br>
+<br>
+<script type="text/javascript">
+    function getParameterByName(name) {
+        name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
+        var regex = new RegExp("[\\?&]" + name + "=([^&#]*)"),
+            results = regex.exec(location.search);
+        return results === null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
+    }
+     id = getParameterByName('p');
+    if(getParameterByName('embed')){
+       embed = getParameterByName('embed');
+    }else{
+       if(getParameterByName('r')){
+           embed = getParameterByName('r');
+        }else{
+           embed = false;
+    }  
+    }
+
+ </script> 
+
+
+<div class="video-container">     
+        <script type="text/javascript">
+            if (embed) {document.write('
+                </script><iframe class="embed-responsive-item" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen="" height="700px" width="100%" src="https://kiloil9mio.pages.dev/repron?r=" scrolling="no" title="Reproductor 1" alt="Reproducir"></iframe>
+</div>
+
+
+
+<script>
+
+    function myFunction() {
+
+      var x = document.getElementById("myTopnav");
+
+      if (x.className === "topnav") {
+
+        x.className += " responsive";
+
+      } else {
+
+        x.className = "topnav";
+
+      }
+
+    }
+
+    </script>
+
+    <footer>
+
+    </footer>
+
+<script>function toggleFullscreen() {
+
+  let elem = document.querySelector("iframe");
+
+  if (!document.fullscreenElement) {
+
+    elem.requestFullscreen().catch((err) => {
+
+      alert(`Error attempting to enable fullscreen mode: ${err.message} (${err.name})`);
+
+    });
+
+  } else {
+
+    document.exitFullscreen();
+
+  }
+
+}</script>
