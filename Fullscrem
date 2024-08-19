@@ -1,77 +1,14 @@
-/* Este modal fullscreen es una modificación de https://codepen.io/andreivictor/pen/MWYNPBV */
 
-==================layout.css==================
-.modal-fullscreen-xl{
-    padding: 0 !important;
-}
-.modal-dialog-xl {
-
-  width: 100%;
-  max-width: none;
-  height: 100%;
-  margin: 0;
-}
-
-.modal-content-xl {
-  height: 100%;
-  border: 0;
-  border-radius: 0;
-}
-
-.modal-body-xl {
-  overflow-y: auto;
-}
-.iframePDF-xl{
-    height: 100%;
-}
-================================================== Modal.blade.php ==================================================
-<div class="modal fade modal-fullscreen-xl" id="modal-fullscreen-xl" tabindex="-1" role="dialog" aria-hidden="true" data-backdrop="static" data-keyboard="false">
-    <div class="modal-dialog modal-dialog-centered modal-lg" role="document" id="modal-dialog-fullscreen">
-        <div class="modal-content" id="modal-content-fullscreen">
-        <div class="modal-header">
-            <h5 class="modal-title">Vista previa</h5>
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-            </button>
-        </div>
-        <div class="modal-body" id="modal-body-fullscreen">
-            <iframe  id="iframePDF"  src=""  width="100%" height="450px" frameBorder="0"></iframe >
-
-        </div>
-        <div class="modal-footer">
-            <button type="button" class="btn btn-primary btn-sm mt-0" id="botonPantallaCompletaModal" value="pantallaCompleta"><i class="fas fa-expand"></i>&nbsp;Pantalla completa</button>
-
-            <button type="button" class="btn btn-secondary btn-sm mt-0" data-dismiss="modal"><i class="far fa-times-circle"></i>&nbsp;Cerrar</button>
-        </div>
-        </div>
-    </div>
-</div>
-
-============================== botonFullscreen.js ==============================
-$('#botonPantallaCompletaModal').click(function(event) {
-    event.preventDefault();
-    var me=$(this),
-    ValorBoton=me.attr('value');
-    if (ValorBoton == "pantallaCompleta"){
-        
-        $('#botonPantallaCompletaModal').html('<i class="fas fa-compress"></i>&nbsp;Restaurar</button>');
-        $("#botonPantallaCompletaModal").attr("value", "restaurar");
-
-        $("#modal-dialog-fullscreen").addClass("modal-dialog-xl");
-        $("#modal-content-fullscreen").addClass("modal-content-xl");
-        $("#modal-body-fullscreen").addClass("modal-body-xl");
-        $("#iframePDF").addClass("iframePDF-xl");
-        $('#modal-fullscreen-xl').modal('handleUpdate');
-        
-    }
-    else{
-        
-        $("#modal-dialog-fullscreen").removeClass("modal-dialog-xl");
-        $("#modal-content-fullscreen").removeClass("modal-content-xl");
-        $("#modal-body-fullscreen").removeClass("modal-body-xl");
-        $("#iframePDF").removeClass("iframePDF-xl");
-        $('#botonPantallaCompletaModal').html('<i class="fas fa-expand"></i>&nbsp;Pantalla completa</button>');
-        $("#botonPantallaCompletaModal").attr("value", "pantallaCompleta");
-    }
-});
-   
+		private function toggleFullScreen(event:MouseEvent):void {
+            switch(stage.displayState) {
+                case "normal":
+                    stage.displayState = "fullScreen";
+					tf1.htmlText = textNormalScreen;
+                    break;
+                case "fullScreen":
+                default:
+                    stage.displayState = "normal";  
+					tf1.htmlText = textFullScreen;  
+                    break;
+            }
+        }        
