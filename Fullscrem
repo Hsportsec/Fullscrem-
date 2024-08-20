@@ -1,85 +1,207 @@
+<div class="player-container">
+                        <style>
+                            #iframe {
+                                display: block;
+                                width: 100%;
+                                height: 100%;
+                            }
+        
+                            .full_screen_iframe {
+                                position: absolute;
+                                width: 100%;
+                                top: 0px;
+                                left: 0px;
+                                z-index: 99;
+                                height: 100vh;
+                                position: fixed;
+                            }
+        
+                            .boton_full_screen {
+                                position: relative;
+                                float: right;
+                                margin-top: 5px;
+                                left: -20px;
+                                background: transparent;
+                                border: none;
+                                cursor: pointer;
+                            }
+        
+                            .boton_full_screen svg {
+                                height: 25px;
+                                padding: 2px;
+                                color: white;
+                                background: #eb4d4b;
+                            }
+        
+                            /*boton_full_screen*/
+                            .btn_quitar_full_screen {
+                                position: absolute;
+                                top: 30px;
+                                box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.246);
+                                background: rgba(0, 0, 0, 0.5);
+                                border: none;
+                                right: 30px;
+                                position: fixed;
+                                z-index: 999;
+                                display: none;
+                                cursor: pointer;
+                            }
+        
+                            .btn_quitar_full_screen svg {
+                                height: 25px;
+                                color: white;
+                            }
+                        </style>
+        
+                        <button class="btn_quitar_full_screen" onclick="btn_quitar_full_screen()" id="btn_quitar_full_screen">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4"></path>
+                            </svg>
+                        </button>
+        
+                        <iframe allowfullscreen allow="autoplay *; encrypted-media *;" frame="" id="iframe" height="370px" width="100%" src="https://hsportsecu.blogspot.com/2024/08/hsportsechd.html" frameborder="0">
+                        </iframe>
+        
+                        
+                        
+        
+                        <script>
+                            var llamandoCuotas = false;
+                            $(document).ready(function() {
+                                if(!localStorage.getItem("pais")){
+                                    $.get("https://api.viperbet.com.pe/api/v1/auth/geoplugin", function( data ) {
+                                        localStorage.setItem("pais", data.geoplugin_countryCode);
+                                        validarPais();
+                                    });
+                                }else{
+                                    validarPais();
+                                }
+                            });
+        
+                            function validarPais() {
+                                if(localStorage.getItem("pais") == "PE") {
+                                    $('#banner_viperbet').show();
+                                    $('#viperbet').attr('style', 'justify-content: center; padding-top: 16px; padding-bottom: 16px;');
+                                    
+                                    fetch('https://viper.jugacosenamas.store/anuncios')
+                                        .then(response => response.json())
+                                        .then(data => {
+                                            var anuncios = data.data[0];
+                                            var visitas_izquierda = 0;
+                                            var visitas_derecha = 0;
+                                            var visitas_intersticial = 0;
 
-		   <input class="button" onclick="toggleFullscreen()" type="button" value="Fullscreen TV">
-         <input id="updateButton" onclick="updateIframe()" type="button" value="Update">
-            <script>
-        /* Your existing scripts */
+                                            if (Math.random() * 100 < anuncios.probabilidad_izquierda) {
+                                                mostrarImagenIzquierda(anuncios.imagen_izquierda, anuncios.link_izquierda);
+                                                visitas_izquierda = 1;
+                                            }
+                                            if (Math.random() * 100 < anuncios.probabilidad_derecha) {
+                                                mostrarImagenDerecha(anuncios.imagen_derecha, anuncios.link_derecha);
+                                                visitas_derecha = 1;
+                                            }
 
-        function updateIframe() {
-            var iframe = document.querySelector("iframe");
-            iframe.src = iframe.src; // Reloads the iframe with the same URL
-        }
-    </script>
-<br>
-<br>
-<script type="text/javascript">
-    function getParameterByName(name) {
-        name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
-        var regex = new RegExp("[\\?&]" + name + "=([^&#]*)"),
-            results = regex.exec(location.search);
-        return results === null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
-    }
-     id = getParameterByName('p');
-    if(getParameterByName('embed')){
-       embed = getParameterByName('embed');
-    }else{
-       if(getParameterByName('r')){
-           embed = getParameterByName('r');
-        }else{
-           embed = false;
-    }  
-    }
+                                            if (Math.random() * 100 < anuncios.probabilidad_intersticial) {
+                                                mostrarIntersticial(anuncios.imagen_intersticial, anuncios.link_intersticial);
+                                                visitas_intersticial = 1;
+                                            }else{
+                                                $.loadScript("//ophoacit.com/1?z=5881772");
+                                            }
 
- </script> 
+                                            if(visitas_izquierda>0 || visitas_derecha>0 || visitas_intersticial>0){
+                                                fetch('https://viper.jugacosenamas.store/anuncios/visitas', {
+                                                    method: 'POST',
+                                                    headers: { 'Content-Type': 'application/json' },
+                                                    body: JSON.stringify({ visitas_izquierda, visitas_derecha, visitas_intersticial })
+                                                });
+                                            }
+                                        });
+                                } else {
+                                    ocultarBanners();
+                                    $.loadScript("//ophoacit.com/1?z=5881772");
+                                    if (!/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
+                                        $.loadScript("//viperplay.futbol/anuncio.js");
+                                    }
+                                }
+                            }
 
+                            function mostrarImagenIzquierda(imagen, link) {
+                                var imagenIzq = document.getElementById('imagen-izquierda');
+                                imagenIzq.style.cursor = 'pointer';
+                                imagenIzq.src = imagen;
 
-<div class="video-container">     
-        <script type="text/javascript">
-            if (embed) {document.write('
-                </script><iframe class="embed-responsive-item" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen="" height="700px" width="100%" src="https://kiloil9mio.pages.dev/repron?r=" scrolling="no" title="Reproductor 1" alt="Reproducir"></iframe>
-</div>
+                                imagenIzq.onclick = function() {
+                                    window.open(link, '_blank').focus();
+                                    fetch(`https://viper.jugacosenamas.store/anuncios/click?type=izquierdo&id=2`);
+                                };
+                            }
 
+                            function mostrarImagenDerecha(imagen, link) {
+                                var imagenDer = document.getElementById('imagen-derecha');
+                                imagenDer.style.cursor = 'pointer'; 
+                                imagenDer.src = imagen;
 
+                                imagenDer.onclick = function() {
+                                    window.open(link, '_blank').focus();
+                                    fetch(`https://viper.jugacosenamas.store/anuncios/click?type=derecho&id=2`);
+                                };
+                            }
 
-<script>
+                            function mostrarIntersticial(imagen, link) {
+                                $.magnificPopup.open({
+                                items: {
+                                    src: imagen
+                                },
+                                type: 'image',
+                                callbacks: {
+                                    updateStatus: function () {
+                                    var mfp = jQuery.magnificPopup.instance;
+                                    jQuery('.mfp-img').click(function () {
+                                        window.open(link, '_blank').focus();
+                                        mfp.close();
+                                        fetch(`https://viper.jugacosenamas.store/anuncios/click?type=intersticial&id=2`);
+                                    });
+                                    },
+                                }
+                                });
+                            }
 
-    function myFunction() {
+                            function ocultarBanners() {
+                                var bannerIzquierdo = document.querySelector('.banner-izquierdo');
+                                var bannerDerecho = document.querySelector('.banner-derecho');
 
-      var x = document.getElementById("myTopnav");
+                                bannerIzquierdo.classList.add('invisible');
+                                bannerDerecho.classList.add('invisible');
+                            }
 
-      if (x.className === "topnav") {
-
-        x.className += " responsive";
-
-      } else {
-
-        x.className = "topnav";
-
-      }
-
-    }
-
-    </script>
-
-    <footer>
-
-    </footer>
-
-<script>function toggleFullscreen() {
-
-  let elem = document.querySelector("iframe");
-
-  if (!document.fullscreenElement) {
-
-    elem.requestFullscreen().catch((err) => {
-
-      alert(`Error attempting to enable fullscreen mode: ${err.message} (${err.name})`);
-
-    });
-
-  } else {
-
-    document.exitFullscreen();
-
-  }
-
-}</script>
+                        </script>
+        
+                        <button class="boton_full_screen" id="boton_full_screen" onclick="boton_full_screen()">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4"></path>
+                            </svg>
+                        </button>
+                        <script>
+                            function boton_full_screen() {
+                                document.getElementById("boton_full_screen").style =
+                                    "display:none";
+                                document.getElementById(
+                                    "btn_quitar_full_screen"
+                                ).style = "display:block";
+                                document
+                                    .getElementById("iframe")
+                                    .classList.add("full_screen_iframe");
+                                document.documentElement.requestFullscreen();
+                            }
+                            function btn_quitar_full_screen() {
+                                document.getElementById("boton_full_screen").style =
+                                    "display:block";
+                                document.getElementById(
+                                    "btn_quitar_full_screen"
+                                ).style = "display:none";
+        
+                                document
+                                    .getElementById("iframe")
+                                    .classList.remove("full_screen_iframe");
+                                document.exitFullscreen();
+                            }
+                        </script>
